@@ -37,6 +37,7 @@ const heroTiles=[
   {t:'م',c:'#EF5C5C',x:'62%',y:'68%',s:80,r:'-6deg'},
 ];
 const art=document.getElementById('heroArt');
+if(art){
 heroTiles.forEach((o,i)=>{
   const d=document.createElement('div');
   d.className='float';
@@ -49,6 +50,7 @@ heroTiles.forEach((o,i)=>{
   d.textContent=o.t;
   art.appendChild(d);
 });
+}
 
 // ---- products ----
 const products=[
@@ -61,6 +63,7 @@ const products=[
    desc:'مطابقة الألوان والأشكال الأساسية بطريقة ممتعة.',play:false},
 ];
 const pg=document.getElementById('prodGrid');
+if(pg){
 products.forEach(p=>{
   const el=document.createElement('div'); el.className='prod';
   el.innerHTML=`
@@ -70,11 +73,12 @@ products.forEach(p=>{
       <h3>${p.title}</h3>
       <p>${p.desc}</p>
       <div class="row">
-        ${p.play?`<a class="mini play" href="matching-game.html">${ICONS.play} العب اللعبة</a>`:'<span class="mini soon">اللعبة قريبًا</span>'}
+        ${p.play?`<a class="mini play" href="product-houroufi.html">${ICONS.play} عرض المنتج</a>`:'<span class="mini soon">اللعبة قريبًا</span>'}
       </div>
     </div>`;
   pg.appendChild(el);
 });
+}
 
 // ---- games hub ----
 const games=[
@@ -84,6 +88,7 @@ const games=[
   {t:'لعبة الأشكال',d:'قريبًا',ic:ICONS.shapes,c:'#4FB477',locked:true},
 ];
 const gg=document.getElementById('gameGrid');
+if(gg){
 games.forEach(g=>{
   if(g.locked){
     const d=document.createElement('div'); d.className='game locked';
@@ -96,13 +101,15 @@ games.forEach(g=>{
     gg.appendChild(a);
   }
 });
+}
 
 // ---- decorative QR blocks ----
 function fillQR(el,n){
   const seed=[1,0,1,1,0,1, 0,1,1,0,1,0, 1,1,0,1,0,1, 0,1,0,1,1,0, 1,0,1,0,1,1, 1,1,0,1,0,1];
   for(let i=0;i<n*n;i++){const b=document.createElement('i'); if(!seed[i%seed.length])b.className='off'; el.appendChild(b);}
 }
-fillQR(document.getElementById('qrArt'),6);
+const qrArtEl=document.getElementById('qrArt');
+if(qrArtEl) fillQR(qrArtEl,6);
 
 // ---- values strip ----
 const VIC={
@@ -118,8 +125,10 @@ const values=[
   {ic:VIC.values,c:'#8B6DC9',t:'قيم وأخلاق',d:'محتوى يغرس الأخلاق الحميدة والقيم الجميلة بأسلوب محبّب.'},
 ];
 const vg=document.getElementById('valuesGrid');
+if(vg){
 values.forEach(v=>{
   const el=document.createElement('div'); el.className='value';
   el.innerHTML=`<div class="vic" style="background:${v.c}">${v.ic}</div><h3>${v.t}</h3><p>${v.d}</p>`;
   vg.appendChild(el);
 });
+}
