@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <g id="icon">
+    <path id="petal-1" d="M100,100 C80,84 76,50 100,22 C124,50 120,84 100,100 Z" fill="#4FB477"></path>
+    <path id="petal-2" d="M100,100 C80,84 76,50 100,22 C124,50 120,84 100,100 Z" fill="#5AB6E8" transform="rotate(72 100 100)"></path>
+    <path id="petal-3" d="M100,100 C80,84 76,50 100,22 C124,50 120,84 100,100 Z" fill="#8B6DC9" transform="rotate(144 100 100)"></path>
+    <path id="petal-4" d="M100,100 C80,84 76,50 100,22 C124,50 120,84 100,100 Z" fill="#EF5C5C" transform="rotate(216 100 100)"></path>
+    <path id="petal-5" d="M100,100 C80,84 76,50 100,22 C124,50 120,84 100,100 Z" fill="#FFC53D" transform="rotate(288 100 100)"></path>
+    <circle id="core" cx="100" cy="100" r="13" fill="#FFF7E9"></circle>
+  </g>
+</svg>
