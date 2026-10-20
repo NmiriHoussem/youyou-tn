@@ -333,9 +333,22 @@ function updateScoreUI(){
   document.getElementById('progVal').textContent = `${matched} / ${MATCH_PAIRS}`;
 }
 
+// written inline rather than via games-data.js so this file stays self-contained
+// for offline use from the printed QR code
+function saveBest(points){
+  try{
+    const key='youyou.progress.v1';
+    const all=JSON.parse(localStorage.getItem(key))||{};
+    const prev=all['houroufi-match']||{};
+    all['houroufi-match']={best:Math.max(prev.best||0,points),plays:prev.plays||0};
+    localStorage.setItem(key,JSON.stringify(all));
+  }catch(e){}
+}
+
 function levelUp(){
   matchLevel++;
   score+=20;                 // page-complete bonus
+  saveBest(score);
   const lu=document.getElementById('levelup');
   document.getElementById('luText').textContent='المُسْتَوَى '+matchLevel;
   lu.classList.add('show');

@@ -52,18 +52,19 @@ heroTiles.forEach((o,i)=>{
 });
 }
 
-// ---- products ----
-const products=[
-  {title:'حروفي الأولى',tag:'متوفر الآن',tagc:'#4FB477',bg:'#FFF7E9',face:'cover',
-   desc:'كتاب تتبّع الحروف + 56 بطاقة مطابقة + لعبة رقمية. 28 حرفًا مع حيوان لكل حرف.',
-   play:true},
-  {title:'الأرقام',tag:'قريبًا',tagc:'#FFC53D',bg:'#8B6DC9',face:'numbers',
-   desc:'تعلّم الأرقام من 1 إلى 20 بالعدّ والتتبّع والمطابقة.',play:false},
-  {title:'الألوان والأشكال',tag:'قريبًا',tagc:'#FFC53D',bg:'#5AB6E8',face:'shapes',
-   desc:'مطابقة الألوان والأشكال الأساسية بطريقة ممتعة.',play:false},
-];
+// ---- products teaser (full catalog lives in products.html) ----
 const pg=document.getElementById('prodGrid');
 if(pg){
+const products=YOUYOU_PRODUCTS.map(p=>({
+  title:p.title,
+  tag:p.tag,
+  tagc:p.tagColor,
+  bg:p.bg,
+  face:p.face,
+  desc:p.desc,
+  href:p.href,
+  play:p.status==='live',
+}));
 products.forEach(p=>{
   const el=document.createElement('div'); el.className='prod';
   el.innerHTML=`
@@ -73,22 +74,24 @@ products.forEach(p=>{
       <h3>${p.title}</h3>
       <p>${p.desc}</p>
       <div class="row">
-        ${p.play?`<a class="mini play" href="product-houroufi">${ICONS.play} عرض المنتج</a>`:'<span class="mini soon">اللعبة قريبًا</span>'}
+        ${p.play?`<a class="mini play" href="${p.href}">${ICONS.play} عرض المنتج</a>`:'<span class="mini soon">اللعبة قريبًا</span>'}
       </div>
     </div>`;
   pg.appendChild(el);
 });
 }
 
-// ---- games hub ----
-const games=[
-  {t:'حروفي الأولى',d:'مطابقة وذاكرة',ic:'<img class="game-thumb" src="'+BOOK_THUMB+'" alt="">',c:'#EF5C5C',href:'matching-game'},
-  {t:'لعبة الأرقام',d:'قريبًا',ic:ICONS.numbers,c:'#8B6DC9',locked:true},
-  {t:'لعبة الألوان',d:'قريبًا',ic:ICONS.palette,c:'#5AB6E8',locked:true},
-  {t:'لعبة الأشكال',d:'قريبًا',ic:ICONS.shapes,c:'#4FB477',locked:true},
-];
+// ---- games hub teaser (full hub lives in games.html) ----
 const gg=document.getElementById('gameGrid');
 if(gg){
+const games=YOUYOU_GAMES.slice(0,4).map(g=>({
+  t:g.title,
+  d:g.status==='live'?(g.short||g.desc):'قريبًا',
+  ic:g.thumb?'<img class="game-thumb" src="'+BOOK_THUMB+'" alt="">':GAME_ICONS[g.icon],
+  c:g.color,
+  href:g.href,
+  locked:g.status!=='live',
+}));
 games.forEach(g=>{
   if(g.locked){
     const d=document.createElement('div'); d.className='game locked';
