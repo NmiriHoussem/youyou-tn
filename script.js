@@ -92,7 +92,7 @@ if(gg){
 const games=YOUYOU_GAMES.slice(0,4).map(g=>({
   t:g.title,
   d:g.status==='live'?(g.short||g.desc):'قريبًا',
-  ic:g.thumb?'<img class="game-thumb" src="'+BOOK_THUMB+'" alt="">':GAME_ICONS[g.icon],
+  ic:g.photo?'<img class="game-thumb" src="'+g.photo+'" alt="">':GAME_ICONS[g.icon],
   c:g.color,
   href:g.href,
   locked:g.status!=='live',

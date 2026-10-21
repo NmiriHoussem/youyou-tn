@@ -29,7 +29,7 @@ const YOUYOU_GAMES = [
   {
     id:'houroufi-match', title:'حروفي الأولى', desc:'طابِق الحرف بالحيوان، أو العب بالذاكرة', short:'مطابقة وذاكرة',
     cat:'learn', status:'live', href:'matching-game', color:'#EF5C5C',
-    ages:'3 - 6', icon:'letters', thumb:true, stars:[60,150,300],
+    ages:'3 - 6', icon:'letters', photo:'houroufi-pack.jpg', stars:[60,150,300],
   },
   {
     id:'numbers-match', title:'لعبة الأرقام', desc:'العدّ والمطابقة من 1 إلى 20',

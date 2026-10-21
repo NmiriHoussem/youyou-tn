@@ -10,11 +10,11 @@ if (hubGrid) {
   const starRow = earned => `<span class="stars">${[0, 1, 2].map(i => star(i < earned)).join('')}</span>`;
   const PLAY = `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>`;
 
-  // games with a cover show it; the rest show their icon on a darkened plate,
+  // games with a photo show it; the rest show their icon on a darkened plate,
   // because the icons are white and would vanish on a white one
   function face(g, cls) {
-    if (g.thumb && typeof BOOK_THUMB !== 'undefined') {
-      return `<span class="${cls}"><img src="${BOOK_THUMB}" alt=""></span>`;
+    if (g.photo) {
+      return `<span class="${cls}"><img src="${g.photo}" alt=""></span>`;
     }
     return `<span class="${cls} plate">${GAME_ICONS[g.icon] || ''}</span>`;
   }
