@@ -61,6 +61,7 @@ const products=YOUYOU_PRODUCTS.map(p=>({
   tagc:p.tagColor,
   bg:p.bg,
   face:p.face,
+  photo:p.photo,
   desc:p.desc,
   href:p.href,
   play:p.status==='live',
@@ -68,7 +69,7 @@ const products=YOUYOU_PRODUCTS.map(p=>({
 products.forEach(p=>{
   const el=document.createElement('div'); el.className='prod';
   el.innerHTML=`
-    <div class="top" style="background:${p.bg};padding:0;overflow:hidden">${p.face==='cover'?`<img class="cover-thumb" src="${BOOK_THUMB}" alt="حروفي الأولى">`:FACE[p.face]}</div>
+    <div class="top" style="background:${p.bg};padding:0;overflow:hidden">${p.photo?`<img class="cover-thumb" src="${p.photo}" alt="مجموعة ${p.title}">`:(p.face==='cover'?`<img class="cover-thumb" src="${BOOK_THUMB}" alt="${p.title}">`:FACE[p.face])}</div>
     <div class="body">
       <span class="tag" style="background:${p.tagc}22;color:${p.tagc}">${p.tag}</span>
       <h3>${p.title}</h3>

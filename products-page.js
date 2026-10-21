@@ -4,6 +4,9 @@ if (ppGrid) {
   const CHECK = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
 
   function faceHTML(p) {
+    if (p.photo) {
+      return `<img class="cover-thumb" src="${p.photo}" alt="مجموعة ${p.title}">`;
+    }
     if (p.face === 'cover' && typeof BOOK_THUMB !== 'undefined') {
       return `<img class="cover-thumb" src="${BOOK_THUMB}" alt="${p.title}">`;
     }

@@ -24,20 +24,19 @@
   </div>
 </nav>
 
-<!-- HUB HEADER -->
-<header class="hub-head">
-  <div class="wrap">
-    <h1>ألعاب <span class="hl">يويو</span></h1>
-    <p>اختر لعبة وابدأ فورًا، تعمل على الهاتف واللوحي بدون تحميل أي تطبيق.</p>
-    <div class="hub-chips" id="hubChips"></div>
-  </div>
-</header>
+<main>
 
-<!-- GAME GRID -->
-<section class="hub-sec">
+<div class="wrap page-top">
+  <h1>ألعاب يويو</h1>
+</div>
+
+<!-- ROSTER: the games are the interface, most recently played one first -->
+<section class="roster-sec">
   <div class="wrap">
-    <div class="hub-grid" id="hubGrid"></div>
-    <div class="hub-empty" id="hubEmpty" hidden>لا توجد ألعاب في هذا القسم بعد. قريبًا.</div>
+    <div class="hub-chips" id="hubChips" role="group" aria-label="تصفية الألعاب حسب النوع"></div>
+    <p class="sr-only" id="hubStatus" aria-live="polite"></p>
+    <div class="roster" id="hubGrid"></div>
+    <div class="hub-empty" id="hubEmpty" hidden>لا توجد ألعاب هنا بعد. جرّب قسمًا آخر.</div>
   </div>
 </section>
 
@@ -49,11 +48,13 @@
       <div>
         <h3>نقاط طفلك محفوظة على هذا الجهاز فقط</h3>
         <p>لا نحتاج حسابًا ولا بريدًا إلكترونيًا، ولا نرسل أي بيانات إلى أي مكان. كل النقاط والنجوم تُحفظ داخل المتصفّح على جهازك.</p>
-        <button class="hub-reset" id="hubReset">حذف النقاط من هذا الجهاز</button>
+        <button type="button" class="hub-reset" id="hubReset">حذف النقاط من هذا الجهاز</button>
       </div>
     </div>
   </div>
 </section>
+
+</main>
 
 <!-- FOOTER -->
 <footer>

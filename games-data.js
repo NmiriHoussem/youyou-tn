@@ -71,7 +71,7 @@ function saveGameResult(id, score){
   try{
     const all = loadProgress();
     const prev = all[id] || {best:0, plays:0};
-    all[id] = {best:Math.max(prev.best||0, score), plays:(prev.plays||0)+1};
+    all[id] = {best:Math.max(prev.best||0, score), plays:(prev.plays||0)+1, at:Date.now()};
     localStorage.setItem(PROGRESS_KEY, JSON.stringify(all));
   }catch(e){ /* private mode or storage blocked, progress just isn't kept */ }
 }

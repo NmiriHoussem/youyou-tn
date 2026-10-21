@@ -340,7 +340,7 @@ function saveBest(points){
     const key='youyou.progress.v1';
     const all=JSON.parse(localStorage.getItem(key))||{};
     const prev=all['houroufi-match']||{};
-    all['houroufi-match']={best:Math.max(prev.best||0,points),plays:prev.plays||0};
+    all['houroufi-match']={best:Math.max(prev.best||0,points),plays:prev.plays||0,at:Date.now()};
     localStorage.setItem(key,JSON.stringify(all));
   }catch(e){}
 }
