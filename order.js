@@ -3,8 +3,11 @@
    prefilled message the way wa.me can. */
 
 const ORDER_CONFIG = {
-  // TODO: your Facebook page username, the part after facebook.com/
-  messengerPage: 'REPLACE_WITH_PAGE',
+  // Facebook page username, the part after facebook.com/
+  messengerPage: 'youyouworldtn',
+  // TODO: WhatsApp number, digits only with country code (e.g. '21612345678').
+  // Leave empty to hide the WhatsApp button.
+  whatsapp: '',
   // TODO: prices in TND. Leave null to show "السعر عند التأكيد" instead.
   prices: { standard: null, gift: null },
 };
@@ -89,8 +92,9 @@ if (modal) {
   const step1 = document.getElementById('orderStep1');
   const done = document.getElementById('orderDone');
   const summary = document.getElementById('orderSummary');
-  const copyNote = document.getElementById('orderCopyNote');
-  const goLink = document.getElementById('orderGo');
+  const waLink = document.getElementById('orderWa');
+  const msgLink = document.getElementById('orderMsg');
+  const copyBtn = document.getElementById('orderCopy');
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -112,32 +116,33 @@ if (modal) {
     const text = orderText(data, packId);
     summary.textContent = text;
 
-    // until the page name is filled in, send nobody to a dead m.me link
-    const configured = ORDER_CONFIG.messengerPage && ORDER_CONFIG.messengerPage !== 'REPLACE_WITH_PAGE';
-    goLink.hidden = !configured;
-    if (configured) goLink.href = 'https://m.me/' + ORDER_CONFIG.messengerPage;
+    // both channels prefill the message, so the customer only presses send.
+    // real link clicks, so no popup blocker and no window.open
+    const encoded = encodeURIComponent(text);
+    waLink.hidden = !ORDER_CONFIG.whatsapp;
+    if (ORDER_CONFIG.whatsapp) {
+      waLink.href = 'https://wa.me/' + ORDER_CONFIG.whatsapp + '?text=' + encoded;
+    }
+    msgLink.hidden = !ORDER_CONFIG.messengerPage;
+    if (ORDER_CONFIG.messengerPage) {
+      msgLink.href = 'https://m.me/' + ORDER_CONFIG.messengerPage + '?text=' + encoded;
+    }
 
-    // Messenger is opened by a real link click rather than window.open, so the
-    // popup blocker cannot swallow it after the async clipboard write
+    copyBtn.textContent = 'انسخ التفاصيل';
     step1.hidden = true;
     done.hidden = false;
-    (configured ? goLink : summary).focus();
+    (ORDER_CONFIG.whatsapp ? waLink : msgLink).focus();
 
-    const pasteMsg = configured
-      ? 'نسخنا تفاصيل طلبك. افتح ماسنجر والصقها في المحادثة.'
-      : 'نسخنا تفاصيل طلبك. أرسلها لنا في رسالة على صفحة يويو على فيسبوك.';
-    const manualMsg = configured
-      ? 'انسخ التفاصيل التالية وأرسلها لنا في المحادثة.'
-      : 'انسخ التفاصيل التالية وأرسلها لنا على صفحة يويو على فيسبوك.';
+  });
 
+  // fallback for anyone who would rather send the order some other way
+  copyBtn.addEventListener('click', function () {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(() => {
-        copyNote.textContent = pasteMsg;
-      }).catch(() => {
-        copyNote.textContent = manualMsg;
-      });
+      navigator.clipboard.writeText(summary.textContent)
+        .then(() => { copyBtn.textContent = 'تم النسخ'; })
+        .catch(() => { copyBtn.textContent = 'حدّد النص أعلاه وانسخه'; });
     } else {
-      copyNote.textContent = manualMsg;
+      copyBtn.textContent = 'حدّد النص أعلاه وانسخه';
     }
   });
 

@@ -67,7 +67,11 @@ const products=YOUYOU_PRODUCTS.map(p=>({
   play:p.status==='live',
 }));
 products.forEach(p=>{
-  const el=document.createElement('div'); el.className='prod';
+  // live products make the whole card one link, so the inner call to action is a
+  // span: an <a> inside an <a> is invalid
+  const el=document.createElement(p.play?'a':'div');
+  el.className='prod';
+  if(p.play) el.href=p.href;
   el.innerHTML=`
     <div class="top" style="background:${p.bg};padding:0;overflow:hidden">${p.photo?`<img class="cover-thumb" src="${p.photo}" alt="مجموعة ${p.title}">`:(p.face==='cover'?`<img class="cover-thumb" src="${BOOK_THUMB}" alt="${p.title}">`:FACE[p.face])}</div>
     <div class="body">
@@ -75,7 +79,7 @@ products.forEach(p=>{
       <h3>${p.title}</h3>
       <p>${p.desc}</p>
       <div class="row">
-        ${p.play?`<a class="mini play" href="${p.href}">${ICONS.play} عرض المنتج</a>`:'<span class="mini soon">اللعبة قريبًا</span>'}
+        ${p.play?`<span class="mini play">${ICONS.play} عرض المنتج</span>`:'<span class="mini soon">اللعبة قريبًا</span>'}
       </div>
     </div>`;
   pg.appendChild(el);
