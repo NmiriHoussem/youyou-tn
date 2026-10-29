@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ارسم ولوّن – يويو</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700;800&display=swap">
+<style>
+:root{--cream:#FFF7E9;--ink:#3E3730;--soft:#8A8078;--red:#EF5C5C;--yellow:#FFC53D;
+  --purple:#8B6DC9;--green:#4FB477;--sky:#5AB6E8;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Baloo Bhaijaan 2',sans-serif;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--cream);color:var(--ink);display:flex;flex-direction:column;touch-action:manipulation;user-select:none;}
+[hidden]{display:none !important;}
+
+.bar{display:flex;align-items:center;gap:10px;padding:10px 14px;flex:0 0 auto;}
+.bar h1{font-size:clamp(18px,4.5vw,24px);font-weight:800;margin-inline:auto;}
+.ibtn{width:46px;height:46px;border:none;border-radius:50%;background:#fff;color:var(--ink);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;box-shadow:0 3px 0 #e7ddc8;}
+.ibtn:active{transform:translateY(2px);box-shadow:0 1px 0 #e7ddc8;}
+
+.screen{flex:1 1 auto;display:flex;flex-direction:column;min-height:0;}
+.hint{text-align:center;font-size:clamp(14px,3.4vw,17px);font-weight:700;color:#6a6157;margin-bottom:8px;}
+
+.pick-grid,.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:6px 14px 16px;overflow-y:auto;align-content:start;}
+@media(max-width:430px){.pick-grid,.gal-grid{grid-template-columns:repeat(2,1fr);}}
+.pick-wrap{position:relative;}
+.pick{width:100%;background:#fff;border:none;border-radius:22px;padding:10px 8px 12px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 5px 0 #e7ddc8;}
+.pick:active{transform:translateY(2px);box-shadow:0 3px 0 #e7ddc8;}
+.pick canvas,.pick svg{width:100%;height:auto;max-height:108px;}
+.pick span{font-size:15px;font-weight:800;}
+.tick{position:absolute;top:8px;inset-inline-end:8px;width:26px;height:26px;border-radius:50%;
+  background:var(--green);display:flex;align-items:center;justify-content:center;}
+.gal{background:#fff;border-radius:20px;padding:8px;box-shadow:0 5px 0 #e7ddc8;}
+.gal canvas{width:100%;height:auto;display:block;}
+.empty{text-align:center;color:var(--soft);font-weight:700;padding:40px 16px;line-height:1.7;}
+
+.stage{flex:1 1 auto;display:flex;align-items:center;justify-content:center;gap:10px;min-height:0;padding:4px 10px;}
+#paint{width:100%;height:100%;max-width:min(78vw,460px);object-fit:contain;}
+.modes{display:flex;flex-direction:column;gap:9px;flex:0 0 auto;}
+.mode{width:66px;height:70px;border-radius:18px;border:3px solid #EFE7D7;background:#fff;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  color:var(--ink);font-family:inherit;font-weight:800;font-size:12px;box-shadow:0 3px 0 #e7ddc8;}
+.mode.on{border-color:var(--green);}
+.mode:active{transform:translateY(2px);box-shadow:0 1px 0 #e7ddc8;}
+.mode.reset{height:56px;color:#8A8078;}
+#paint{touch-action:none;cursor:pointer;}
+
+.foot{flex:0 0 auto;padding:8px 14px 14px;}
+.tools{display:flex;gap:10px;justify-content:center;align-items:center;margin-bottom:10px;}
+.tool{width:46px;height:46px;border-radius:50%;border:3px solid #fff;background:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 #e7ddc8;color:var(--ink);}
+.tool.on{outline:4px solid var(--ink);outline-offset:2px;}
+.tool i{display:block;background:var(--ink);border-radius:50%;}
+.tool.sep{margin-inline-start:8px;}
+.palette{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
+.sw{width:46px;height:46px;border-radius:50%;border:3px solid #fff;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.12);}
+.sw.on{outline:4px solid var(--ink);outline-offset:2px;}
+.row{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:16px;padding:13px 22px;
+  border-radius:999px;display:inline-flex;align-items:center;gap:7px;min-height:46px;}
+.btn:active{transform:translateY(2px);}
+.btn-main{background:var(--green);color:#fff;box-shadow:0 4px 0 #3d9160;}
+.btn-soft{background:#fff;color:var(--ink);box-shadow:0 4px 0 #e7ddc8;}
+
+.over{position:fixed;inset:0;background:rgba(62,55,48,.55);display:flex;align-items:center;justify-content:center;padding:18px;z-index:20;}
+.card{background:var(--cream);border-radius:28px;padding:26px 22px;text-align:center;width:100%;max-width:380px;}
+.card h2{font-size:clamp(24px,6vw,32px);font-weight:800;margin-bottom:4px;}
+.card p{font-size:15px;color:#6a6157;font-weight:600;margin-bottom:14px;}
+.stars{display:flex;gap:8px;justify-content:center;margin-bottom:18px;color:var(--yellow);}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important;}}
+</style>
+</head>
+<body>
+
+<div class="screen" id="pickScreen">
+  <div class="bar">
+    <a class="ibtn" href="games" aria-label="رجوع"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
+    <h1>ارسم ولوّن</h1>
+    <button class="ibtn" id="galBtn" aria-label="معرضي"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15l5-5 4 4 3-3 6 6"/></svg></button>
+  </div>
+  <p class="hint">اختر حيوانًا، ارسمه ثم لوّنه</p>
+  <div class="pick-grid" id="pickGrid"></div>
+</div>
+
+<div class="screen" id="playScreen" hidden>
+  <div class="bar">
+    <button class="ibtn" id="backBtn" aria-label="رجوع"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+    <h1 id="animalName"></h1>
+    <span style="width:46px"></span>
+  </div>
+  <div class="stage">
+    <div class="modes">
+      <button class="mode on" id="modeDraw">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        ارسم
+      </button>
+      <button class="mode" id="modeColour">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3c-5 0-9 3.4-9 8 0 3.6 2.9 5 5 5 1.4 0 1.4-1 2.1-1.8.7-.7 1.8-.4 2.9-.4 2.9 0 5-1.8 5-4.7C18 5.6 15.9 3 12 3Z"/><circle cx="7.5" cy="9" r="1.2" fill="currentColor" stroke="none"/><circle cx="11" cy="6.8" r="1.2" fill="currentColor" stroke="none"/><circle cx="14.8" cy="8.4" r="1.2" fill="currentColor" stroke="none"/></svg>
+        لوّن
+      </button>
+      <button class="mode reset" id="resetBtn">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.6-6.4"/><path d="M3 4v5h5"/></svg>
+        إعادة
+      </button>
+    </div>
+    <canvas id="paint" width="560" height="560"></canvas>
+  </div>
+  <div class="foot">
+    <div id="drawFoot">
+      <p class="hint">ارسم فوق الشكل بإصبعك</p>
+      <div class="tools" id="tools">
+        <button class="tool size on" data-size="5" aria-label="قلم رفيع"><i style="width:7px;height:7px"></i></button>
+        <button class="tool size" data-size="9" aria-label="قلم متوسط"><i style="width:13px;height:13px"></i></button>
+        <button class="tool size" data-size="15" aria-label="قلم سميك"><i style="width:21px;height:21px"></i></button>
+        <button class="tool sep" id="eraserBtn" aria-label="ممحاة">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.2 3.8 21 8.6a2 2 0 0 1 0 2.8L12.4 20H7.6l-4.4-4.4a2 2 0 0 1 0-2.8l10.2-9a2 2 0 0 1 2.8 0Z"/><path d="M8 20 19 9"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="colorFoot" hidden>
+      <p class="hint">اختر لونًا ثم المس أي جزء</p>
+      <div class="palette" id="palette"></div>
+      <div class="row">
+        <button class="btn btn-soft" id="undoBtn">تراجع</button>
+        <button class="btn btn-main" id="doneBtn">تمّ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="galScreen" hidden>
+  <div class="bar">
+    <button class="ibtn" id="galBack" aria-label="رجوع"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+    <h1>معرضي</h1><span style="width:46px"></span>
+  </div>
+  <div class="gal-grid" id="galGrid"></div>
+</div>
+
+<div class="over" id="doneOver" hidden>
+  <div class="card">
+    <h2>أحسنت</h2>
+    <p id="doneText"></p>
+    <div class="stars" id="doneStars"></div>
+    <div class="row"><button class="btn btn-main" id="saveBtn">احفظ في معرضي</button>
+      <button class="btn btn-soft" id="dlBtn">حمّل الصورة</button></div>
+    <div class="row" style="margin-top:9px"><button class="btn btn-soft" id="againBtn">حيوان آخر</button></div>
+  </div>
+</div>
+
+<script src="draw-animals.js"></script>
+<script src="draw-engine.js"></script>
+<script>
+const pickScreen = document.getElementById('pickScreen');
+const playScreen = document.getElementById('playScreen');
+const galScreen  = document.getElementById('galScreen');
+const paint = document.getElementById('paint');
+const show = el => [pickScreen, playScreen, galScreen].forEach(s => s.hidden = s !== el);
+
+let cur=null, ops=[], colour=COLORS[0], mode='draw';
+let ghostImg=null, lineImg=null, wall=null, buf=null, ctx=null;
+let strokeCv=null, strokeCtx=null, dark=null;
+
+let brush = 5;        // half-width of the child's line, in canvas pixels
+let erasing = false;
+// no completion target: the child moves on with the لوّن thumbnail when ready
+
+/* ---------- picker ---------- */
+async function renderPicker(){
+  const all = load();
+  document.getElementById('pickGrid').innerHTML = ANIMALS.map((a,i) =>
+    `<div class="pick-wrap"><button class="pick" data-i="${i}">
+       <div class="thumb" data-id="${a.id}">${svgString(a, INK, 150)}</div><span>${a.name}</span>
+     </button>${all[a.id] ? `<span class="tick"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>` : ''}</div>`).join('');
+  document.querySelectorAll('.pick').forEach(b => b.onclick = () => startAnimal(+b.dataset.i));
+  for (const a of ANIMALS){
+    if (!all[a.id]) continue;
+    const c = await renderSaved(a, all[a.id].ops, 150);
+    const slot = document.querySelector(`.thumb[data-id="${a.id}"]`);
+    if (slot) slot.replaceChildren(c);
+  }
+}
+
+/* ---------- draw phase ---------- */
+async function startAnimal(i){
+  cur = ANIMALS[i]; ops = [];
+  document.getElementById('animalName').textContent = cur.name;
+  show(playScreen);
+
+  ghostImg = await loadArt(cur, CW, '#EAE1CE');
+  lineImg  = await loadArt(cur, CW, INK);
+  ctx = paint.getContext('2d', {willReadFrequently:true});
+
+  dark = buildWall(lineImg, CW);
+
+  strokeCv = document.createElement('canvas');
+  strokeCv.width = strokeCv.height = CW;
+  strokeCtx = strokeCv.getContext('2d');
+  strokeCtx.lineCap = strokeCtx.lineJoin = 'round';
+  strokeCtx.strokeStyle = INK;
+
+  wall = sealOutside(dark, CW);
+  ctx.clearRect(0, 0, CW, CW);
+  buf = ctx.getImageData(0, 0, CW, CW);
+  setMode('draw');
+}
+
+function setMode(m){
+  mode = m;
+  document.getElementById('drawFoot').hidden  = m !== 'draw';
+  document.getElementById('colorFoot').hidden = m !== 'colour';
+  document.getElementById('modeDraw').classList.toggle('on', m === 'draw');
+  document.getElementById('modeColour').classList.toggle('on', m === 'colour');
+  render();
+}
+
+function render(){
+  if (mode === 'draw') renderDraw(); else repaint();
+}
+
+function renderDraw(){
+  ctx.clearRect(0, 0, CW, CW);
+  ctx.drawImage(ghostImg, 0, 0, CW, CW);
+  ctx.drawImage(strokeCv, 0, 0);
+}
+
+/* object-fit:contain letterboxes the square bitmap inside the element box, so
+   the element's rect is not where the pixels are. Measure the painted area. */
+function toCanvas(e){
+  const r = paint.getBoundingClientRect();
+  const scale = Math.min(r.width, r.height) / CW;
+  const ox = r.left + (r.width  - CW * scale) / 2;
+  const oy = r.top  + (r.height - CW * scale) / 2;
+  return {x:(e.clientX - ox) / scale, y:(e.clientY - oy) / scale};
+}
+
+function applyTool(){
+  strokeCtx.lineWidth = brush * 2;
+  strokeCtx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+}
+
+let drawing = false, last = null;
+paint.addEventListener('pointerdown', e => {
+  if (mode !== 'draw') return;
+  drawing = true;
+  applyTool();
+  last = toCanvas(e);
+  strokeCtx.beginPath();
+  strokeCtx.moveTo(last.x, last.y);
+  strokeCtx.lineTo(last.x + 0.01, last.y);
+  strokeCtx.stroke();
+  renderDraw();
+});
+
+window.addEventListener('pointermove', e => {
+  if (!drawing || mode !== 'draw') return;
+  e.preventDefault();
+  const p = toCanvas(e);
+  strokeCtx.lineTo(p.x, p.y);
+  strokeCtx.stroke();
+  last = p;
+  renderDraw();
+});
+window.addEventListener('pointerup', () => { drawing = false; });
+window.addEventListener('pointercancel', () => { drawing = false; });
+
+/* ---------- colour ---------- */
+function repaint(){
+  ctx.clearRect(0, 0, CW, CW);
+  ctx.putImageData(buf, 0, 0);
+  ctx.drawImage(lineImg, 0, 0, CW, CW);
+}
+
+paint.addEventListener('click', e => {
+  if (mode !== 'colour') return;
+  const p = toCanvas(e);
+  const x = Math.round(p.x), y = Math.round(p.y);
+  if (bucket(buf, wall, CW, x, y, hex2rgb(colour))){
+    ops.push({x:x / CW, y:y / CW, c:colour});
+    repaint();
+  }
+});
+
+function replay(){
+  ctx.clearRect(0, 0, CW, CW);
+  buf = ctx.getImageData(0, 0, CW, CW);
+  ops.forEach(o => bucket(buf, wall, CW, Math.round(o.x*CW), Math.round(o.y*CW), hex2rgb(o.c)));
+  repaint();
+}
+
+document.getElementById('modeDraw').onclick   = () => setMode('draw');
+document.getElementById('modeColour').onclick = () => setMode('colour');
+
+/* reset clears only the mode you are in, so colouring is not lost by redrawing */
+document.getElementById('resetBtn').onclick = () => {
+  if (mode === 'draw'){
+    strokeCtx.clearRect(0, 0, CW, CW);
+    renderDraw();
+  } else {
+    ops = [];
+    replay();
+  }
+};
+
+document.querySelectorAll('.tool.size').forEach(t => t.onclick = () => {
+  brush = +t.dataset.size;
+  erasing = false;
+  document.querySelectorAll('.tool').forEach(x => x.classList.remove('on'));
+  t.classList.add('on');
+});
+document.getElementById('eraserBtn').onclick = function(){
+  erasing = !erasing;
+  document.querySelectorAll('.tool').forEach(x => x.classList.remove('on'));
+  if (erasing) this.classList.add('on');
+  else document.querySelector(`.tool.size[data-size="${brush}"]`).classList.add('on');
+};
+
+document.getElementById('undoBtn').onclick = () => { if (ops.length){ ops.pop(); replay(); } };
+document.getElementById('backBtn').onclick = async () => { await renderPicker(); show(pickScreen); };
+
+/* ---------- palette ---------- */
+document.getElementById('palette').innerHTML = COLORS.map((c,i) =>
+  `<button class="sw${i?'':' on'}" style="background:${c}" data-c="${c}" aria-label="لون"></button>`).join('');
+document.querySelectorAll('.sw').forEach(s => s.onclick = () => {
+  colour = s.dataset.c;
+  document.querySelectorAll('.sw').forEach(x => x.classList.remove('on'));
+  s.classList.add('on');
+});
+
+/* ---------- done ---------- */
+const over = document.getElementById('doneOver');
+const STAR = on => `<svg viewBox="0 0 24 24" width="30" height="30" fill="${on?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6-5.3-3-5.3 3 1.1-6L3.4 9.4l6-.8L12 3Z"/></svg>`;
+
+document.getElementById('doneBtn').onclick = () => {
+  const n = ops.length;
+  const stars = n >= 4 ? 3 : n >= 2 ? 2 : 1;
+  document.getElementById('doneText').textContent = `لوّنت ${n} ${n === 1 ? 'جزءًا' : 'أجزاء'}`;
+  document.getElementById('doneStars').innerHTML = [0,1,2].map(i => STAR(i < stars)).join('');
+  over.hidden = false;
+};
+document.getElementById('saveBtn').onclick = () => {
+  const all = load();
+  all[cur.id] = {ops, at:Date.now()};
+  save(all); pushProgress(Object.keys(all).length);
+  document.getElementById('saveBtn').textContent = 'تم الحفظ';
+};
+document.getElementById('againBtn').onclick = async () => {
+  over.hidden = true;
+  document.getElementById('saveBtn').textContent = 'احفظ في معرضي';
+  await renderPicker(); show(pickScreen);
+};
+document.getElementById('dlBtn').onclick = () => {
+  const out = document.createElement('canvas');
+  out.width = out.height = CW;
+  const o = out.getContext('2d');
+  o.fillStyle = '#FFF7E9'; o.fillRect(0, 0, CW, CW);
+  o.drawImage(paint, 0, 0);
+  out.toBlob(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `youyou-${cur.id}.png`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+};
+
+/* ---------- gallery ---------- */
+document.getElementById('galBtn').onclick = async () => {
+  const all = load();
+  const items = ANIMALS.filter(a => all[a.id]);
+  const grid = document.getElementById('galGrid');
+  grid.innerHTML = items.length ? '' : `<p class="empty">معرضك فارغ.<br>لوّن حيوانًا واحفظه ليظهر هنا.</p>`;
+  for (const a of items){
+    const box = document.createElement('div');
+    box.className = 'gal';
+    box.appendChild(await renderSaved(a, all[a.id].ops, 240));
+    grid.appendChild(box);
+  }
+  show(galScreen);
+};
+document.getElementById('galBack').onclick = async () => { await renderPicker(); show(pickScreen); };
+
+renderPicker();
+</script>
+</body>
+</html>

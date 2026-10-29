@@ -89,7 +89,10 @@ products.forEach(p=>{
 // ---- games hub teaser (full hub lives in games.html) ----
 const gg=document.getElementById('gameGrid');
 if(gg){
-const games=YOUYOU_GAMES.slice(0,4).map(g=>({
+// playable games lead the teaser, so a new live game is never buried by locked ones
+const games=YOUYOU_GAMES.slice()
+  .sort((a,b)=>(b.status==='live')-(a.status==='live'))
+  .slice(0,4).map(g=>({
   t:g.title,
   d:g.status==='live'?(g.short||g.desc):'قريبًا',
   ic:g.photo?'<img class="game-thumb" src="'+g.photo+'" alt="">':GAME_ICONS[g.icon],

@@ -20,6 +20,9 @@ const GAME_ICONS = {
     <path d="M32 44v10M22 41l-6 7M42 41l6 7" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg>`,
   bolt:`<svg viewBox="0 0 64 64" width="46" height="46" fill="none">
     <path d="M36 6 18 34h12l-4 24 20-30H34l2-22Z" fill="#fff"/></svg>`,
+  brush:`<svg viewBox="0 0 64 64" width="46" height="46" fill="none">
+    <path d="M44 10 26 28l10 10 18-18a7 7 0 0 0-10-10Z" fill="#fff"/>
+    <path d="M24 32c-6 0-10 5-10 11 0 4-2 6-4 7 3 3 7 4 11 4 7 0 12-5 12-12 0-6-4-10-9-10Z" fill="#fff"/></svg>`,
 };
 
 /* status: 'live' | 'soon'
@@ -44,6 +47,11 @@ const YOUYOU_GAMES = [
     cat:'learn', status:'soon', color:'#4FB477', ages:'2 - 5', icon:'shapes',
   },
   {
+    id:'draw-color', title:'ارسم ولوّن', desc:'تتبّع الحيوان بإصبعك ثم لوّنه',
+    cat:'create', status:'live', href:'draw-game', color:'#8B6DC9',
+    ages:'2 - 6', icon:'brush', stars:[20,60,120],
+  },
+  {
     id:'quick-tap', title:'اللمس السريع', desc:'المِس الشكل الصحيح قبل أن يختفي',
     cat:'reflex', status:'soon', color:'#FFC53D', ages:'4 - 6', icon:'tap',
   },
@@ -56,6 +64,7 @@ const YOUYOU_GAMES = [
 const GAME_CATS = [
   {id:'all',    label:'كل الألعاب'},
   {id:'learn',  label:'تعلّم'},
+  {id:'create', label:'رسم وتلوين'},
   {id:'reflex', label:'سرعة وانتباه'},
 ];
 
